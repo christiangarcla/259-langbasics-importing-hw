@@ -1,7 +1,7 @@
 #PSYC 259 Homework 1 - Data Import
 #For full credit, provide answers for at least 6/8 questions
 
-#List names of students collaborating with (no more than 2): 
+#List names of students collaborating with (no more than 2): Just Christian
 
 #GENERAL INFO 
 #data_A contains 12 files of data. 
@@ -17,8 +17,7 @@
 
 # Load the readr package
 
-# ANSWER
-
+library(readr)
 
 ### QUESTION 2 ----- 
 
@@ -46,7 +45,10 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 
 # ANSWER
 
-
+fname <- "data_A/6191_1.txt"
+col_names  <-  c("trial_num","speed_actual","speed_response","correct")
+ds1 <- read_delim(file = fname, col_names = col_names, skip = 7)
+print(ds1)
 
 ### QUESTION 3 ----- 
 
@@ -55,6 +57,12 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 # Then write the new data to a CSV file in the "data_cleaned" folder
 
 # ANSWER
+# Create a calculated column
+ds1$trial_num_100 <- (ds1$trial_num+100)
+# See the results
+print(ds1)
+# Let's write the combined data to disk
+write_csv(ds1, file = "data_A/ds1_combined.csv")
 
 
 ### QUESTION 4 ----- 
@@ -63,13 +71,19 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 # Store it to a variable
 
 # ANSWER
-
+# Get list of files
+full_file_names <- list.files("data_A", full.names = TRUE)
+print(full_file_names)
 
 ### QUESTION 5 ----- 
 
 # Read all of the files in data_A into a single tibble called ds
 
 # ANSWER
+#hmmmmm I think i'm missing something
+# Pass the list to read_csv to read all of them into a single tibble
+ds <- read_csv(full_file_names)
+print(ds)
 
 
 ### QUESTION 6 -----
@@ -102,4 +116,9 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 # There are two sheets of data -- import each one into a new tibble
 
 # ANSWER
+library(readxl)
+
+xl1 <- read_xlsx('data_B/participant_info.xlsx')
+
+
 
