@@ -50,6 +50,9 @@ col_names  <-  c("trial_num","speed_actual","speed_response","correct")
 ds1 <- read_delim(file = fname, col_names = col_names, skip = 7)
 print(ds1)
 
+#MComment: This looks right, but the HW key recommends using read_tsv (the commands in the function are the same)
+#Key: ds1 <- read_tsv("data_A/6191_1.txt", skip = 7, col_names = col_names)
+
 ### QUESTION 3 ----- 
 
 # For some reason, the trial numbers for this experiment should start at 100
@@ -62,8 +65,10 @@ ds1$trial_num_100 <- (ds1$trial_num+100)
 # See the results
 print(ds1)
 # Let's write the combined data to disk
-write_csv(ds1, file = "data_A/ds1_combined.csv")
+write_csv(ds1, file = "data_A/ds1_combined.csv") #This isn't combined yet, just the 1 data file
 
+#MComment: Note the HW also instructs making a new folder called data_cleaned
+          #Putting the cleaned and uncleaned in the same folder is confusing (and messes up Q4 technically)
 
 ### QUESTION 4 ----- 
 
@@ -85,6 +90,10 @@ print(full_file_names)
 ds <- read_csv(full_file_names)
 print(ds)
 
+#MComment: Right idea, but you'd wanna use read_tsv (because it's a txt.file, not csv)
+            #Also, you'd wanna use the same code as Q2 (i.e. skip 7 rows and rename columns)
+
+#Key: ds <- read_tsv(fnames, skip = 7, col_names = col_names)
 
 ### QUESTION 6 -----
 
@@ -98,6 +107,8 @@ print(ds)
 
 # ANSWER
 
+#Key: ds <- read_tsv(fnames, skip = 7, col_names = col_names, col_types = "iccl")
+      #ds$trial_num_100 <- ds$trial_num + 100
 
 ### QUESTION 7 -----
 
@@ -108,6 +119,21 @@ print(ds)
 
 # ANSWER
 
+#Key: ds <- read_tsv(fnames, skip = 7, col_names = col_names, col_types = "iccl", id = "filename")
+
+# How to get more useful info out of file name?
+    #library(tidyr)
+    #ds <- ds %>% extract(filename, into = c("id","session"), "(\\d{4})_(\\d{1})") 
+#Extract takes a character variable, names of where to put the extracted data,
+# and then a regular expression saying what pattern to look for.
+# each part in parentheses is one variable to extract
+# \\d{4} means 4 digits, \\d{1} means 1 digit
+
+# Or use "separate", which breaks everything by any delimiter (or a custom one)
+# data_A/6191_1.txt will turn into:
+# data   A   6191   1   txt
+# if we only want to keep 6191 and 1, we can put NAs for the rest
+    #ds <- ds %>% separate(filename, into = c(NA, NA, "id", "session", NA))
 
 ### QUESTION 8 -----
 
@@ -119,6 +145,10 @@ print(ds)
 library(readxl)
 
 xl1 <- read_xlsx('data_B/participant_info.xlsx')
+
+#MComment: Partially correct, this is right for sheet 1, but you'd need a second code for sheet 2
+
+#Key: test_dates <- read_xlsx("data_B/participant_info.xlsx", col_names = c("participant", "test_date"), sheet = 2)
 
 
 
